@@ -8,7 +8,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class plgJ2StorePayment_zarinpalInstallerScript {
+class plgJ2StorePayment_nextpayInstallerScript {
 
     function preflight( $type, $parent ) {
 

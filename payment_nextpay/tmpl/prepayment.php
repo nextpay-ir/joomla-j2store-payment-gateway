@@ -8,8 +8,8 @@
 <br/>
 <div class="note">
     <?php if(!isset($vars->error)){ ?>
-        <form action="<?php echo $vars->redirectToZP ?>" method="get">
-            <input type="submit" class="btn btn-primary button" value="<?php  echo JText::_("J2STORE_ZARINPAL_PLACE_ORDER"); ?>"/>
+        <form action="<?php echo $vars->redirectToNextpay ?>" method="get">
+            <input type="submit" class="btn btn-primary button" value="<?php  echo JText::_("J2STORE_NEXTPAY_PLACE_ORDER"); ?>"/>
         </form>
     <?php } else { ?>
         <p>
