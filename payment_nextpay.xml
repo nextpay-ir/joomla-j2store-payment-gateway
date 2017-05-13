@@ -17,7 +17,7 @@
         <folder>payment_nextpay</folder>
     </files>
 
-    <languages folder="language/fa-IR">
+    <languages folder="language/fa-IR/">
         <language tag="fa-IR">fa-IR.plg_j2store_payment_nextpay.ini</language>
         <language tag="fa-IR">fa-IR.plg_j2store_payment_nextpay.sys.ini</language>
     </languages>

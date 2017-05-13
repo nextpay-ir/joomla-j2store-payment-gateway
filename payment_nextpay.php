@@ -54,7 +54,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
         $params = array(
             'api_key' => $api_key,
             'amount' => $amount,
-            'order_id' => $desc,
+            'order_id' => $order_id,
             'callback_uri' => $this->callBackUrl
         );
 
@@ -123,7 +123,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
                 $order->payment_complete();
                 $order->empty_cart();
                 $message = JText::_("J2STORE_NEXTPAY_PAYMENT_SUCCESS") . "\n";
-                $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_ZP_REF") . $validate->RefID;
+                $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_ZP_REF") . " : ". $trans_id;
                 $vars->message = $message;
                 $html = $this->_getLayout('postpayment', $vars);
                 // $app->close();
@@ -132,7 +132,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
 
             $message = JText::_("J2STORE_NEXTPAY_PAYMENT_FAILED") . "\n";
             $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_ERROR");
-            $message .= $this->statusText($validate->Status) . "\n";
+            $message .= $this->statusText($validate['code']) . "\n";
             $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_CONTACT") . "\n";
             $vars->message = $message;
             $html = $this->_getLayout('postpayment', $vars);
@@ -149,7 +149,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
     private function requestNextpay($params = [])
     {
         try{
-            $client = new SoapClient('https://api.nextpay.org/gateway/token.wsdl', ['encoding' => 'UTF-8']);
+            $client = new SoapClient('https://api.nextpay.org/gateway/token.wsdl', array('encoding' => 'UTF-8'));
         } catch(SoapFault $e){
             return ['error' => $e->getMessage()];
         }
@@ -159,6 +159,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
         if ($res != "" && $res != NULL && is_object($res)) {
             if (intval($res->code) == -1)
                 $trans_id = $res->trans_id;
+	        else return array("trans_id" => $trans_id, 'error' => 'خطا در ایجاد درخواست با کد : ' . $res->code);
         }
         else {
             return array("trans_id" => $trans_id, 'error' => "خطا در پاسخ دهی به درخواست با SoapClinet");
