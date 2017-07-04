@@ -99,8 +99,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
 
             $api_key = $this->params->get('api_key');
             //$orderId = $this->params->get('order_id');
-            $trans_id = $this->params->get('trans_id');
-
+            $trans_id = $_POST['trans_id'];
             //$app = JFactory::getApplication();
 
             $params = array(
@@ -123,7 +122,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
                 $order->payment_complete();
                 $order->empty_cart();
                 $message = JText::_("J2STORE_NEXTPAY_PAYMENT_SUCCESS") . "\n";
-                $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_ZP_REF") . " : ". $trans_id;
+                $message .= JText::_("شماره تراکنش شما") . " : ". $trans_id;
                 $vars->message = $message;
                 $html = $this->_getLayout('postpayment', $vars);
                 // $app->close();
@@ -132,7 +131,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
 
             $message = JText::_("J2STORE_NEXTPAY_PAYMENT_FAILED") . "\n";
             $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_ERROR");
-            $message .= $this->statusText($validate['code']) . "\n";
+            $message .= "شماره خطای بازگشتی : " . $validate['code']. "\n"; //$this->statusText() . "\n";
             $message .= JText::_("J2STORE_NEXTPAY_PAYMENT_CONTACT") . "\n";
             $vars->message = $message;
             $html = $this->_getLayout('postpayment', $vars);
@@ -159,7 +158,7 @@ class plgJ2StorePayment_nextpay extends J2StorePaymentPlugin
         if ($res != "" && $res != NULL && is_object($res)) {
             if (intval($res->code) == -1)
                 $trans_id = $res->trans_id;
-	        else return array("trans_id" => $trans_id, 'error' => 'خطا در ایجاد درخواست با کد : ' . $res->code);
+            else return array("trans_id" => $trans_id, 'error' => 'خطا در ایجاد درخواست با کد : ' . $res->code);
         }
         else {
             return array("trans_id" => $trans_id, 'error' => "خطا در پاسخ دهی به درخواست با SoapClinet");
